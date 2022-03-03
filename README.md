@@ -2,11 +2,12 @@
 
 #### test_codecov.yml
 ##### summary
-* runs a pytest and coverage
+* runs pytest and coverage
 * publishes to a codecov account
 ##### In local repo:
 * requirements file must be in ```src/requirements.txt```
 * codecov token passed as ```codecovtoken``` secret 
+* github repo secret name expected is ```CODECOV_TOKEN```
 * example github workflow usage on every push:
 ```
 name: Push
