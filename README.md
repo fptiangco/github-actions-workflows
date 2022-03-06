@@ -24,10 +24,33 @@ jobs:
 
 #### build_push.yml
 ##### summary
-* 
-
-##### example usage
-* 
+* Logs in to dockerhub
+* Create a git tag from input
+* Builds from dockerfile and pushes image to dockerhub account 
+##### inputs
+* image_name
+* tag
+##### In local repo:
+* Dockerfile must be in current directory
+* github repo secret names expected are ```DOCKER_USER``` and ```DOCKER_PASSWORD```
+* example github workflow usage on every tag:
 ```
+name: Tag
+
+on:
+  push:
+    tags:        
+      - '*'
+jobs:
+
+  docker-build-push:
+    needs: test-codecov
+    uses: fptiangco/github-actions-workflows/.github/workflows/build_push.yml@main
+    with:
+      image_name: ${{github.event.repository.name}}
+      tag: ${{github.ref_name}}
+    secrets:
+      registry_username: ${{secrets.DOCKER_USER}}
+      registry_password: ${{secrets.DOCKER_PASSWORD}}
 
 ```
