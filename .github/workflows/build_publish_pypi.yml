@@ -1,0 +1,35 @@
+# Build and Publish to Pypi
+name: Build and Publish to Pypi
+
+on:
+  workflow_call:
+    inputs:
+      twine_repository:
+        required: true
+        type: string
+    secrets:
+      twine_token:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 
+      - name: Pip
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install setuptools wheel twine
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python3 setup.py install
+      - name: TestPyPi
+        run: |
+          python3 setup.py sdist bdist_wheel
+          python3 -m twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.twine_token }}
+          TWINE_REPOSITORY: ${{ inputs.twine_repository }}
