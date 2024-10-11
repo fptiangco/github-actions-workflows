@@ -28,7 +28,7 @@ jobs:
       - name: TestPyPi
         run: |
           python3 setup.py sdist bdist_wheel
-          python3 -m twine upload dist/*
+          python3 -m twine upload dist/* --verbose
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.twine_token }}
